@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import re
 from pandas import DataFrame
 import html5lib
+import matplotlib.pyplot as plt
 
 URL = 'https://www.usinflationcalculator.com/inflation/consumer-price-index-and-annual-percent-changes-from-1913-to-2008/'
 page = requests.get(URL)
@@ -20,4 +21,8 @@ df = pd.read_html(str(table))[0]
 df.columns = df.iloc[1]
 df = df.iloc[2:] 
 df = df.fillna(0)
-print(df)
+
+df = df.apply(pd.to_numeric, errors='coerce')
+
+df.plot(x='Year', y='Avg-Avg', kind='line', title='US Inflation over Time', legend = None)
+plt.show()
